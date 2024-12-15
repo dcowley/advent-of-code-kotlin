@@ -24,3 +24,10 @@ fun String.md5() = BigInteger(1, MessageDigest.getInstance("MD5").digest(toByteA
  * The cleaner shorthand for printing output.
  */
 fun Any?.println() = println(this)
+
+fun String.toGrid(): Map<Pair<Int, Int>, Char> {
+    val w = indexOf('\n')
+    return replace("\n", "")
+        .mapIndexed { i, c -> (i % w to i / w) to c }
+        .toMap()
+}
