@@ -3,14 +3,14 @@ fun main() {
         val width = input.first().length
         val map = input.joinToString("")
 
-        var direction = Direction.UP
+        var direction = Direction.NORTH
         var position = map.indexOf('^')
 
         fun nextPosition(position: Int, direction: Direction) = when (direction) {
-            Direction.UP -> position - width
-            Direction.RIGHT -> position + 1
-            Direction.DOWN -> position + width
-            Direction.LEFT -> position - 1
+            Direction.NORTH -> position - width
+            Direction.EAST -> position + 1
+            Direction.SOUTH -> position + width
+            Direction.WEST -> position - 1
         }
 
         val path = mutableListOf<Pair<Int, Direction>>()
@@ -21,7 +21,7 @@ fun main() {
             }
 
             if (map[nextPosition] == '#') {
-                direction = direction.next()
+                direction = direction.turn(Rotation.CLOCKWISE)
                 path.add(position to direction)
             } else {
                 position = nextPosition
@@ -36,14 +36,14 @@ fun main() {
         val width = input.first().length
         val map = input.joinToString("")
 
-        var direction = Direction.UP
+        var direction = Direction.NORTH
         var position = map.indexOf('^')
 
         fun nextPosition(position: Int, direction: Direction) = when (direction) {
-            Direction.UP -> position - width
-            Direction.RIGHT -> position + 1
-            Direction.DOWN -> position + width
-            Direction.LEFT -> position - 1
+            Direction.NORTH -> position - width
+            Direction.EAST -> position + 1
+            Direction.SOUTH -> position + width
+            Direction.WEST -> position - 1
         }
 
         val path = mutableListOf<Pair<Int, Direction>>()
@@ -54,7 +54,7 @@ fun main() {
             }
 
             if (map[nextPosition] == '#') {
-                direction = direction.next()
+                direction = direction.turn(Rotation.CLOCKWISE)
                 path.add(position to direction)
             } else {
                 position = nextPosition
@@ -68,12 +68,12 @@ fun main() {
 
         options.forEach { obstacle ->
             position = startingPosition
-            direction = Direction.UP
+            direction = Direction.NORTH
             path.clear()
 
             while (true) {
                 val nextPosition = nextPosition(position, direction)
-                if (nextPosition !in map.indices || (direction == Direction.RIGHT) && nextPosition % width == 0 || (direction == Direction.LEFT) && (nextPosition + 1) % width == 0) {
+                if (nextPosition !in map.indices || (direction == Direction.EAST) && nextPosition % width == 0 || (direction == Direction.WEST) && (nextPosition + 1) % width == 0) {
                     break
                 }
 
@@ -84,7 +84,7 @@ fun main() {
                     }
 
                     map[nextPosition] == '#' || nextPosition == obstacle -> {
-                        direction = direction.next()
+                        direction = direction.turn(Rotation.CLOCKWISE)
                         path.add(position to direction)
                     }
 
@@ -105,15 +105,4 @@ fun main() {
     val input = readInput("Day06")
     part1(input).println()
     part2(input).println()
-}
-
-enum class Direction {
-    UP, RIGHT, DOWN, LEFT;
-
-    fun next() = when (this) {
-        UP -> RIGHT
-        RIGHT -> DOWN
-        DOWN -> LEFT
-        LEFT -> UP
-    }
 }

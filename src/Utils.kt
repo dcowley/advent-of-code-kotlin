@@ -31,3 +31,31 @@ fun String.toGrid(): Map<Pair<Int, Int>, Char> {
         .mapIndexed { i, c -> (i % w to i / w) to c }
         .toMap()
 }
+
+enum class Direction {
+    NORTH, EAST, SOUTH, WEST;
+
+    fun turn(rotation: Rotation) = when (this) {
+        EAST -> if (rotation == Rotation.CLOCKWISE) SOUTH else NORTH
+        SOUTH -> if (rotation == Rotation.CLOCKWISE) WEST else EAST
+        WEST -> if (rotation == Rotation.CLOCKWISE) NORTH else SOUTH
+        NORTH -> if (rotation == Rotation.CLOCKWISE) EAST else WEST
+    }
+}
+
+enum class Rotation {
+    CLOCKWISE,
+    ANTICLOCKWISE
+}
+
+val Pair<Int, Int>.x
+    get() = first
+val Pair<Int, Int>.y
+    get() = second
+
+fun Pair<Int, Int>.move(direction: Direction) = when (direction) {
+    Direction.EAST -> x + 1 to y
+    Direction.SOUTH -> x to y + 1
+    Direction.WEST -> x - 1 to y
+    Direction.NORTH -> x to y - 1
+}

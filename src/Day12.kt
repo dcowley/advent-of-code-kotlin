@@ -86,7 +86,7 @@ fun main() {
                         if (isBorder) {
                             borderCount++
                             visitedPlots += plot
-                            listOf(direction.previous(), direction.next()).forEach { sideDirection ->
+                            listOf(direction.turn(Rotation.ANTICLOCKWISE), direction.turn(Rotation.CLOCKWISE)).forEach { sideDirection ->
                                 var current = plot
                                 do {
                                     current = current.move(sideDirection)
@@ -113,13 +113,6 @@ fun main() {
     val input = readInput("Day12")
     part1(input).println()
     part2(input).println()
-}
-
-fun Direction.previous() = when (this) {
-    Direction.DOWN -> Direction.RIGHT
-    Direction.LEFT -> Direction.DOWN
-    Direction.UP -> Direction.LEFT
-    Direction.RIGHT -> Direction.UP
 }
 
 fun part2(input: List<String>): Int {
@@ -165,41 +158,41 @@ fun part2(input: List<String>): Int {
         fun Pair<Int, Int>.nextDirection(current: Direction): Direction {
             val (x, y) = this
 
-            val canTurnBack = when (current.previous()) {
-                Direction.RIGHT -> {
+            val canTurnBack = when (current.turn(Rotation.ANTICLOCKWISE)) {
+                Direction.EAST -> {
                     x + 1 to y in path && x + 1 to y !in visited
                 }
 
-                Direction.DOWN -> {
+                Direction.SOUTH -> {
                     x to y + 1 in path && x to y + 1 !in visited
                 }
 
-                Direction.LEFT -> {
+                Direction.WEST -> {
                     x - 1 to y in path && x - 1 to y !in visited
                 }
 
-                Direction.UP -> {
+                Direction.NORTH -> {
                     x to y - 1 in path && x to y - 1 !in visited
                 }
             }
             if (canTurnBack) {
-                return current.previous()
+                return current.turn(Rotation.ANTICLOCKWISE)
             }
 
             val canGoStraight = when (current) {
-                Direction.RIGHT -> {
+                Direction.EAST -> {
                     x + 1 to y in path && x + 1 to y !in visited
                 }
 
-                Direction.DOWN -> {
+                Direction.SOUTH -> {
                     x to y + 1 in path && x to y + 1 !in visited
                 }
 
-                Direction.LEFT -> {
+                Direction.WEST -> {
                     x - 1 to y in path && x - 1 to y !in visited
                 }
 
-                Direction.UP -> {
+                Direction.NORTH -> {
                     x to y - 1 in path && x to y - 1 !in visited
                 }
             }
@@ -208,15 +201,15 @@ fun part2(input: List<String>): Int {
             }
 
             return when {
-                x + 1 to y in path && x + 1 to y !in visited -> Direction.RIGHT
-                x to y + 1 in path && x to y + 1 !in visited -> Direction.DOWN
-                x - 1 to y in path && x - 1 to y !in visited -> Direction.LEFT
-                else -> Direction.UP
+                x + 1 to y in path && x + 1 to y !in visited -> Direction.EAST
+                x to y + 1 in path && x to y + 1 !in visited -> Direction.SOUTH
+                x - 1 to y in path && x - 1 to y !in visited -> Direction.WEST
+                else -> Direction.NORTH
             }
         }
 
         var (x, y) = path.first()
-        var direction = Direction.UP
+        var direction = Direction.NORTH
         var corners = 0
 
         while (true) {
@@ -227,10 +220,10 @@ fun part2(input: List<String>): Int {
             direction = nextDirection
 
             when (direction) {
-                Direction.RIGHT -> x++
-                Direction.DOWN -> y++
-                Direction.LEFT -> x--
-                Direction.UP -> y--
+                Direction.EAST -> x++
+                Direction.SOUTH -> y++
+                Direction.WEST -> x--
+                Direction.NORTH -> y--
             }
 
             visited.add(x to y)
@@ -248,21 +241,9 @@ fun part2(input: List<String>): Int {
 private typealias Plant = Char
 private typealias Plot = Pair<Int, Int>
 
-private val Plot.x
-    get() = first
-private val Plot.y
-    get() = second
-
 private fun Plot.getNeighbours() = setOf(
     x + 1 to y,
     x - 1 to y,
     x to y + 1,
     x to y - 1
 )
-
-fun Plot.move(direction: Direction) = when (direction) {
-    Direction.RIGHT -> x + 1 to y
-    Direction.DOWN -> x to y + 1
-    Direction.LEFT -> x - 1 to y
-    Direction.UP -> x to y - 1
-}
