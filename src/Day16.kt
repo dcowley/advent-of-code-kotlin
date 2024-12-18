@@ -1,7 +1,5 @@
 import java.util.PriorityQueue
 
-typealias Node = Pair<Int, Int>
-
 data class State(val node: Node, val direction: Direction)
 data class Path(val state: State, val cost: Int, val previous: Set<State>)
 
