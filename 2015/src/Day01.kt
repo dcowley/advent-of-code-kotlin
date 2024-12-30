@@ -1,17 +1,16 @@
 fun main() {
     fun part1(input: String): Int {
-        return input.count { it == '(' } - input.count { it == ')' }
+        return input.sumOf { (if (it == '(') 1 else -1).toInt() }
     }
 
     fun part2(input: String): Int {
         var floor = 0
-        input.forEachIndexed { i, c ->
-            floor += if (c == '(') 1 else -1
-            if (floor == -1) {
-                return i + 1
-            }
+        var index = 0
+
+        while (floor != -1) {
+            floor += if (input[index++] == '(') 1 else -1
         }
-        return -1
+        return index
     }
 
     check(part1("(())") == 0)
