@@ -8,7 +8,7 @@ typealias Node = Pair<Int, Int>
 /**
  * Reads lines from the given input txt file.
  */
-fun readInputText(name: String) = Path("src/$name.txt").readText().trim()
+fun readInputText(name: String) = Path("2024/src/$name.txt").readText().trim()
 
 /**
  * Reads lines from the given input txt file.

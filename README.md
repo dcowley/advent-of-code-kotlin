@@ -12,10 +12,12 @@ If you're stuck with Kotlin-specific questions or anything related to this templ
 
 ```
 .
-├── module.yaml             Amper configuration file
-└── src
-    ├── DayN.kt             An empty implementation for the Nth AoC day
-    ├── Utils.kt            A set of utility methods shared across days
+├── project.yaml            Amper project configuration file
+└── YYYY                    AoC year
+    ├── module.yaml         Amper module configuration file
+    └── src
+        ├── DayN.kt             An empty implementation for the Nth AoC day
+        └── Utils.kt            A set of utility methods shared across days
 ```
 
 [^aoc]: [Advent of Code][aoc] – An annual event of Christmas-oriented programming challenges started December 2015.

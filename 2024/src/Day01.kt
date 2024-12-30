@@ -53,6 +53,7 @@ fun main() {
         return similarityScore
     }
 
+
     val testInput = readInput("Day01_test")
     check(part1(testInput) == 11)
     check(part2(testInput) == 31)
