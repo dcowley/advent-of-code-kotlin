@@ -1,15 +1,17 @@
 fun main() {
+    val directions = mapOf(
+        '>' to Direction.EAST,
+        'v' to Direction.SOUTH,
+        '<' to Direction.WEST,
+        '^' to Direction.NORTH,
+    )
+
     fun part1(input: String): Int {
         val visited = mutableSetOf(0 to 0)
 
         var position = visited.first()
         input.forEach {
-            when (it) {
-                '>' -> position = position.first + 1 to position.second
-                'v' -> position = position.first to position.second + 1
-                '<' -> position = position.first - 1 to position.second
-                '^' -> position = position.first to position.second - 1
-            }
+            position = position.move(directions.getValue(it))
             visited += position
         }
         return visited.size
@@ -22,12 +24,7 @@ fun main() {
         var robotPosition = visited.first()
         input.forEachIndexed { i, it ->
             var position = if (i % 2 == 0) santaPosition else robotPosition
-            when (it) {
-                '>' -> position = position.first + 1 to position.second
-                'v' -> position = position.first to position.second + 1
-                '<' -> position = position.first - 1 to position.second
-                '^' -> position = position.first to position.second - 1
-            }
+            position = position.move(directions.getValue(it))
             visited += position
 
             if (i % 2 == 0) {
