@@ -1,11 +1,10 @@
 fun main() {
     fun solve(input: String, numZeros: Int): Long {
-        var i = -1L
-        while (true) {
-            if ("$input${++i}".md5().startsWith("0".repeat(numZeros))) {
-                return i
-            }
-        }
+        val zeros = "0".repeat(numZeros)
+        var i = 0L
+        while (!"$input$i".md5().startsWith(zeros))
+            i++
+        return i
     }
 
     fun part1(input: String) = solve(input, 5)
