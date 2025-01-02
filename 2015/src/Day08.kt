@@ -12,6 +12,19 @@ fun main() {
         }
     }
 
+    fun part2(input: List<String>): Int {
+        return input.sumOf {
+            val data = it
+                .replace("\\", "\\\\")
+                .replace("\"", "\\\"")
+
+            "\"$data\"".length - it.length
+        }
+    }
+
     check(part1(readInput("Day08_test")) == 12)
     part1(readInput("Day08")).println()
+
+    check(part2(readInput("Day08_test")) == 19)
+    part2(readInput("Day08")).println()
 }
