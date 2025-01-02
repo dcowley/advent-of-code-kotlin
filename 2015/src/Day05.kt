@@ -8,12 +8,11 @@ fun main() {
         return input.count(String::isNice)
     }
 
-    fun part2(input: List<String>): Int {
-        return input.count {
-            val repeats = it.zipWithNext { a, b -> "$a$b".toRegex().findAll(it).count() > 1 }.any { it }
-            val surrounds = it.zipWithNext { a, b -> "$a$b$a".toRegex().findAll(it).count() >= 1 }.any { it }
-            repeats && surrounds
-        }
+    fun part2(input: List<String>) = input.count {
+        val pairs = it.zipWithNext()
+        val repeats = pairs.any { (a, b) -> "$a$b".toRegex().findAll(it).count() > 1 }
+        val surrounds = pairs.any { (a, b) -> "$a$b$a".toRegex().findAll(it).count() >= 1 }
+        repeats && surrounds
     }
 
     check(part1(listOf("ugknbfddgicrmopn")) == 1)
