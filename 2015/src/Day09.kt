@@ -1,4 +1,5 @@
-import java.util.PriorityQueue
+import java.util.*
+import kotlin.math.max
 
 fun main() {
     fun parseInput(name: String) = buildMap<String, MutableSet<Pair<String, Int>>> {
@@ -43,6 +44,30 @@ fun main() {
         return graph.keys.minOf(::tsp)
     }
 
+    fun part2(graph: Map<String, Set<Pair<String, Int>>>): Int {
+        fun dfs(city: String, distance: Int = 0, visited: MutableSet<String> = mutableSetOf()): Int {
+            visited += city
+            if (visited.size == graph.keys.size) {
+                return distance
+            }
+
+            var maxDistance = Int.MIN_VALUE
+            graph.getValue(city).forEach { neighbour ->
+                if (neighbour.first !in visited) {
+                    maxDistance = max(dfs(neighbour.first, distance + neighbour.second, visited), maxDistance)
+                    visited -= neighbour.first
+                }
+            }
+
+            return maxDistance
+        }
+
+        return graph.keys.maxOf(::dfs)
+    }
+
     check(part1(parseInput("Day09_test")) == 605)
     part1(parseInput("Day09")).println()
+
+    check(part2(parseInput("Day09_test")) == 982)
+    part2(parseInput("Day09")).println()
 }
