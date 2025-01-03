@@ -7,7 +7,7 @@ fun main() {
         fun String.hasDoubles(num: Int = 2) = alphabet.count { "$it$it" in this } >= num
         fun String.hasIllegalChars() = contains("[iol]".toRegex())
 
-        while (String(result).let { it.hasIllegalChars() || !(it.hasStraight() && it.hasDoubles()) }) {
+        do {
             for (i in result.indices.reversed()) {
                 val index = alphabet.indexOf(result[i])
                 if (index == alphabet.lastIndex) {
@@ -17,12 +17,14 @@ fun main() {
                     break
                 }
             }
-        }
+        } while (String(result).let { it.hasIllegalChars() || !(it.hasStraight() && it.hasDoubles()) })
 
         return String(result)
     }
 
     check(part1("abcdefgh") == "abcdffaa")
     check(part1("ghijklmn") == "ghjaabcc")
-    part1(readInputText("Day11")).println()
+
+    val password = part1(readInputText("Day11")).also(::println)
+    part1(password).println()
 }
