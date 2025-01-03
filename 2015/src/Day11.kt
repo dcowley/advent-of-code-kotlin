@@ -1,5 +1,5 @@
 fun main() {
-    fun part1(input: String): String {
+    fun solve(input: String): String {
         val alphabet = "abcdefghijklmnopqrstuvwxyz"
         val result = input.toCharArray()
 
@@ -22,9 +22,9 @@ fun main() {
         return String(result)
     }
 
-    check(part1("abcdefgh") == "abcdffaa")
-    check(part1("ghijklmn") == "ghjaabcc")
+    check(solve("abcdefgh") == "abcdffaa")
+    check(solve("ghijklmn") == "ghjaabcc")
 
-    val password = part1(readInputText("Day11")).also(::println)
-    part1(password).println()
+    val password = solve(readInputText("Day11")).also(::println)
+    solve(password).println()
 }
