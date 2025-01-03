@@ -18,4 +18,5 @@ fun main() {
     check(part1("1", 4) == "111221")
     check(part1("1", 5) == "312211")
     part1(readInputText("Day10"), 40).length.println()
+    part1(readInputText("Day10"), 50).length.println()
 }
