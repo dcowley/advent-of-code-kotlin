@@ -16,8 +16,9 @@ fun main() {
     }
 
     fun part1(graph: Map<String, Set<Pair<String, Int>>>): Int {
+        val finalStateMask = (1 shl graph.keys.size) - 1
+
         fun tsp(start: String): Int {
-            val finalStateMask = (1 shl graph.keys.size) - 1
             val visited = mutableSetOf<Int>()
             val queue = PriorityQueue<Triple<String, Int, Int>>(compareBy { it.second })
             queue += Triple(start, 0, 1 shl graph.keys.indexOf(start))
@@ -45,17 +46,20 @@ fun main() {
     }
 
     fun part2(graph: Map<String, Set<Pair<String, Int>>>): Int {
-        fun dfs(city: String, distance: Int = 0, visited: MutableSet<String> = mutableSetOf()): Int {
-            visited += city
-            if (visited.size == graph.keys.size) {
+        val finalStateMask = (1 shl graph.keys.size) - 1
+
+        fun dfs(city: String, distance: Int = 0, state: Int = 1 shl graph.keys.indexOf(city), visited: MutableSet<Int> = mutableSetOf()): Int {
+            visited += state
+
+            if (state == finalStateMask) {
                 return distance
             }
 
             var maxDistance = Int.MIN_VALUE
             graph.getValue(city).forEach { neighbour ->
-                if (neighbour.first !in visited) {
-                    maxDistance = max(dfs(neighbour.first, distance + neighbour.second, visited), maxDistance)
-                    visited -= neighbour.first
+                val nextMask = state or (1 shl graph.keys.indexOf(neighbour.first))
+                if (nextMask !in visited) {
+                    maxDistance = max(dfs(neighbour.first, distance + neighbour.second, nextMask, visited), maxDistance)
                 }
             }
 
