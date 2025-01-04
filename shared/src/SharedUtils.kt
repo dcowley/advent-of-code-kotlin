@@ -42,3 +42,14 @@ enum class Rotation {
     CLOCKWISE,
     ANTICLOCKWISE
 }
+
+fun <T> permutations(list: List<T>): List<List<T>> = when {
+    list.size == 1 -> listOf(list)
+    else ->
+        permutations(list.drop(1))
+            .flatMap {
+                list.indices.map { i ->
+                    it.toMutableList().apply { add(i, list.first()) }
+                }
+            }
+}
