@@ -1,5 +1,4 @@
 import kotlin.math.floor
-import kotlin.math.max
 import kotlin.math.min
 
 fun main() {
@@ -10,7 +9,7 @@ fun main() {
         }
     }.toMap()
 
-    fun part1(input: Map<String, Triple<Int, Int, Int>>, seconds: Int): Map<String, Int> = input.entries.associate {
+    fun solve(input: Map<String, Triple<Int, Int, Int>>, seconds: Int) = input.entries.associate {
         it.key to it.value.let { (speed, flySeconds, restSeconds) ->
             val fullCycles = floor(seconds / (flySeconds + restSeconds).toDouble()).toInt()
             val fullCyclesDistance = speed * flySeconds * fullCycles
@@ -19,22 +18,17 @@ fun main() {
         }
     }
 
+    fun part1(input: Map<String, Triple<Int, Int, Int>>, seconds: Int) = solve(input, seconds)
+
     fun part2(input: Map<String, Triple<Int, Int, Int>>, seconds: Int): Map<String, Int> {
         val points = input.keys
             .associateWith { 0 }
             .toMutableMap()
 
         repeat(seconds) { i ->
-            val distances = input.entries.associate {
-                it.key to it.value.let { (speed, flySeconds, restSeconds) ->
-                    val fullCycles = floor((i + 1) / (flySeconds + restSeconds).toDouble()).toInt()
-                    val fullCyclesDistance = speed * flySeconds * fullCycles
-                    val lastCycleDistance = min(flySeconds, (i + 1) - fullCycles * (flySeconds + restSeconds)) * speed
-                    fullCyclesDistance + lastCycleDistance
-                }
-            }
+            val distances = solve(input, i + 1)
 
-            val maxDistance = distances.maxOf { it.value }
+            val maxDistance = solve(input, i + 1).maxOf { it.value }
             distances.filterValues { it == maxDistance }.keys.forEach {
                 points[it] = points.getOrDefault(it, 0) + 1
             }
