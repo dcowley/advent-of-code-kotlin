@@ -1,5 +1,6 @@
 import com.google.gson.Gson
 import com.google.gson.JsonElement
+import com.google.gson.JsonPrimitive
 
 fun main() {
     fun part1(input: String): Int {
@@ -14,29 +15,21 @@ fun main() {
         fun solve(json: JsonElement): Int {
             return when {
                 json.isJsonPrimitive -> {
-                    return if (json.asJsonPrimitive.isNumber) {
+                    if (json.asJsonPrimitive.isNumber) {
                         json.asJsonPrimitive.asInt
                     } else 0
                 }
 
                 json.isJsonObject -> {
-                    val entries = json.asJsonObject.entrySet()
-                    return if (entries.any { it.value.isJsonPrimitive && it.value.asString == "red" }) {
-                        0
-                    } else {
-                        entries.sumOf {
-                            solve(it.value)
-                        }
-                    }
+                    json.asJsonObject.asMap().values
+                        .takeUnless { JsonPrimitive("red") in it }
+                        ?.sumOf { solve(it) }
+                        ?: 0
                 }
 
-                json.isJsonArray -> {
-                    json.asJsonArray.sumOf {
-                        solve(it)
-                    }
-                }
+                json.isJsonArray -> json.asJsonArray.sumOf { solve(it) }
 
-                else -> error("Invalid JsonElement type: $json")
+                else -> error("Unsupported JsonElement type: $json")
             }
         }
 
