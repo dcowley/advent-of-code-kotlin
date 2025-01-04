@@ -22,7 +22,7 @@ fun main() {
                 }
     }
 
-    fun part1(graph: Map<String, MutableSet<Pair<String, Int>>>): Int {
+    fun part1(graph: Map<String, Set<Pair<String, Int>>>): Int {
         val permutations = permutations(graph.keys.toList())
         return permutations.maxOf { seating ->
             (seating + seating.first())
@@ -31,6 +31,16 @@ fun main() {
         }
     }
 
+    fun part2(graph: Map<String, Set<Pair<String, Int>>>): Int {
+        return part1(graph.toMutableMap().apply {
+            this["Dean"] = graph.keys.map { it to 0 }.toSet()
+            graph.forEach { (guest, seating) ->
+                this[guest] = seating + ("Dean" to 0)
+            }
+        })
+    }
+
     check(part1(parse("Day13_test")) == 330)
     part1(parse("Day13")).println()
+    part2(parse("Day13")).println()
 }
