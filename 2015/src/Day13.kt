@@ -11,18 +11,7 @@ fun main() {
         }
     }
 
-    fun <T> permutations(list: List<T>): List<List<T>> = when {
-        list.size == 1 -> listOf(list)
-        else ->
-            permutations(list.drop(1))
-                .flatMap { perm ->
-                    (list.indices).map { i ->
-                        perm.subList(0, i) + list.first() + perm.drop(i)
-                    }
-                }
-    }
-
-    fun part1(graph: Map<String, Set<Pair<String, Int>>>): Int {
+    fun solve(graph: Map<String, Set<Pair<String, Int>>>): Int {
         val permutations = permutations(graph.keys.toList())
         return permutations.maxOf { seating ->
             (seating + seating.first())
@@ -31,16 +20,16 @@ fun main() {
         }
     }
 
-    fun part2(graph: Map<String, Set<Pair<String, Int>>>): Int {
-        return part1(graph.toMutableMap().apply {
-            this["Dean"] = graph.keys.map { it to 0 }.toSet()
-            graph.forEach { (guest, seating) ->
-                this[guest] = seating + ("Dean" to 0)
-            }
-        })
-    }
+    fun part1(graph: Map<String, Set<Pair<String, Int>>>) = solve(graph)
 
-    check(part1(parse("Day13_test")) == 330)
+    fun part2(graph: Map<String, Set<Pair<String, Int>>>) = solve(graph.toMutableMap().apply {
+        this["Dean"] = graph.keys.map { it to 0 }.toSet()
+        graph.forEach { (guest, seating) ->
+            this[guest] = seating + ("Dean" to 0)
+        }
+    })
+
+    check(solve(parse("Day13_test")) == 330)
     part1(parse("Day13")).println()
     part2(parse("Day13")).println()
 }
