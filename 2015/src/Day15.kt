@@ -49,6 +49,35 @@ fun main() {
         }
     }
 
+    fun part2(input: Map<String, Qualities>, teaspoons: Int = 100): Long {
+        return permutations(teaspoons, input.keys.size).maxOf {
+            val calories = input.keys.zip(it)
+                .sumOf { (ingredient, quantity) -> input.getValue(ingredient).calories * quantity }
+                .coerceAtLeast(0)
+            if (calories != 500) {
+                0L
+            } else {
+                val capacity = input.keys.zip(it)
+                    .sumOf { (ingredient, quantity) -> input.getValue(ingredient).capacity * quantity }
+                    .coerceAtLeast(0)
+                val durability = input.keys.zip(it)
+                    .sumOf { (ingredient, quantity) -> input.getValue(ingredient).durability * quantity }
+                    .coerceAtLeast(0)
+                val flavor = input.keys.zip(it)
+                    .sumOf { (ingredient, quantity) -> input.getValue(ingredient).flavor * quantity }
+                    .coerceAtLeast(0)
+                val texture = input.keys.zip(it)
+                    .sumOf { (ingredient, quantity) -> input.getValue(ingredient).texture * quantity }
+                    .coerceAtLeast(0)
+
+                (capacity * durability * flavor * texture.toLong())
+            }
+        }
+    }
+
     check(part1(parse("Day15_test")) == 62_842_880L)
     part1(parse("Day15")).println()
+
+    check(part2(parse("Day15_test")) == 57_600_000L)
+    part2(parse("Day15")).println()
 }
