@@ -34,5 +34,21 @@ fun main() {
         return filtered.keys.first()
     }
 
+    fun part2(input: Map<Int, Map<String, Int>>): Int {
+        var filtered = input
+        things.forEach { (key, num) ->
+            filtered = filtered.filterValues {
+                when (key) {
+                    "cats", "trees" -> !it.containsKey(key) || it.getValue(key) > num
+                    "pomeranians", "goldfish" -> !it.containsKey(key) || it.getValue(key) < num
+                    else -> !it.containsKey(key) || it.getValue(key) == num
+                }
+            }
+        }
+        check(filtered.size == 1)
+        return filtered.keys.first()
+    }
+
     part1(parse("Day16")).println()
+    part2(parse("Day16")).println()
 }
