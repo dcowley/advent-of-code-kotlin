@@ -53,3 +53,10 @@ fun <T> permutations(list: List<T>): List<List<T>> = when {
                 }
             }
 }
+
+fun <T> Collection<T>.powerSet(): List<List<T>> = when {
+    isEmpty() -> listOf(listOf())
+    else -> drop(1).powerSet().let { set ->
+        set + set.map { it + first() }
+    }
+}
