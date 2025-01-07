@@ -10,10 +10,3 @@ fun readInputText(name: String) = Path("2024/src/$name.txt").readText().trim()
  * Reads lines from the given input txt file.
  */
 fun readInput(name: String) = readInputText(name).lines()
-
-fun String.toGrid(): Map<Pair<Int, Int>, Char> {
-    val w = indexOf('\n')
-    return replace("\n", "")
-        .mapIndexed { i, c -> (i % w to i / w) to c }
-        .toMap()
-}
