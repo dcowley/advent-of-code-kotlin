@@ -17,6 +17,15 @@ fun main() {
             }
     }.toSet().size
 
-    check(parse("Day19_test").let { part1(it.first, it.second) } == 4)
+    // https://www.reddit.com/r/adventofcode/comments/3xflz8/comment/cy4etju/
+    fun part2(molecule: String): Int {
+        val elements = molecule.count { it.isUpperCase() }
+        val brackets = molecule.windowed(2).count { it == "Rn" || it == "Ar" }
+        val commas = molecule.count { it == 'Y' }
+        return elements - brackets - 2 * commas - 1
+    }
+
+    check(parse("Day19_test1").let { part1(it.first, it.second) } == 4)
     parse("Day19").let { part1(it.first, it.second) }.println()
+    part2(readInput("Day19").last()).println()
 }
