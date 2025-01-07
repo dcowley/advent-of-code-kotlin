@@ -60,3 +60,10 @@ fun <T> Collection<T>.powerSet(): List<List<T>> = when {
         set + set.map { it + first() }
     }
 }
+
+fun String.toGrid(): Map<Pair<Int, Int>, Char> {
+    val w = indexOf('\n')
+    return replace("\n", "")
+        .mapIndexed { i, c -> (i % w to i / w) to c }
+        .toMap()
+}
