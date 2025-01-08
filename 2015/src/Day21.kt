@@ -1,3 +1,4 @@
+import kotlin.math.max
 import kotlin.math.min
 
 fun main() {
@@ -34,8 +35,9 @@ fun main() {
         Triple(matches[0], matches[1], matches[2])
     }
 
-    fun part1(input: Triple<Int, Int, Int>) {
+    fun solve(input: Triple<Int, Int, Int>) {
         var minCost = Int.MAX_VALUE
+        var maxCost = Int.MIN_VALUE
         weapons.forEach { weapon, (cost1, atk1, def1) ->
             armor.forEach { armor, (cost2, atk2, def2) ->
                 rings.forEach { ring1, (cost3, atk3, def3) ->
@@ -49,22 +51,25 @@ fun main() {
                         while (hp > 0 && bossHp > 0) {
                             if (turn++ % 2 == 0) {
                                 bossHp -= atk - bossDef
-                                println("The player deals $atk - $bossDef = ${atk - bossDef} damage; the boss goes down to $bossHp hit points.")
                             } else {
                                 hp -= bossAtk - def
-                                println("The boss deals $bossAtk - $def = ${bossAtk - def} damage; the player goes down to $hp hit points.")
                             }
                         }
 
+                        val cost = cost1 + cost2 + cost3 + cost4
                         if (hp > bossHp) {
-                            val cost = cost1 + cost2 + cost3 + cost4
-                            minCost = min(minCost, cost)
+                            minCost = min(cost, minCost)
+                        } else {
+                            maxCost = max(cost, maxCost)
                         }
                     }
                 }
             }
         }
+
+        println(minCost)
+        println(maxCost)
     }
 
-    part1(parse("Day21")).println()
+    solve(parse("Day21"))
 }
