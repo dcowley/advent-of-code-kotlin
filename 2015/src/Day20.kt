@@ -13,9 +13,23 @@ fun main() {
     fun part1(target: Int): Int {
         var num = 1
         while (true) {
-            if (divisors(num).sumOf { 10 * it } >= target) {
-                return num
+            val presents = divisors(num).sumOf { 10 * it }
+            if (presents >= target) return num
+            num++
+        }
+    }
+
+    fun part2(target: Int): Int {
+        var num = 1
+        while (true) {
+            val presents = divisors(num).sumOf {
+                when {
+                    50 * it > num -> 11 * it
+                    else -> 0
+                }
             }
+
+            if (presents >= target) return num
             num++
         }
     }
@@ -26,4 +40,5 @@ fun main() {
     check(part1(70) == 4)
 
     part1(readInputText("Day20").toInt()).println()
+    part2(readInputText("Day20").toInt()).println()
 }
