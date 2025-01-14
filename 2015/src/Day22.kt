@@ -7,6 +7,7 @@ data class State(
     val shieldTimer: Int = 0,
     val poisonTimer: Int = 0,
     val chargeTimer: Int = 0,
+    val hardMode: Boolean = false
 ) {
     val cost: Int by lazy { spells.sumOf { it.cost } }
 
@@ -69,7 +70,9 @@ fun main() {
     fun State.playRound(spell: Spell): State {
         require(spell in availableSpells)
 
-        return this
+        val state = if (hardMode) copy(playerHp = playerHp - 1) else this
+        if (state.playerHp == 0) return state
+        return state
             .playerTurn(spell)
             .applyEffects()
             .bossTurn()
@@ -102,5 +105,10 @@ fun main() {
         return solve(state)!!.cost
     }
 
+    fun part2(state: State): Int {
+        return solve(state.copy(hardMode = true))!!.cost
+    }
+
     part1(parse("Day22")).println()
+    part2(parse("Day22")).println()
 }
