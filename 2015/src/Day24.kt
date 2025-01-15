@@ -1,37 +1,17 @@
-import kotlin.math.pow
-
 fun main() {
-    fun part1(): Int {
-        var a = (2 * (3.0.pow(7) + 3.0.pow(4) + 3.0.pow(3)) + 1).toInt()
+    fun solve(initial: Long): Int {
+        var a = initial
         var b = 0
 
-        while (a != 1) {
+        while (true) {
             b += 1
-            if (a % 2 == 0) {
-                a /= 2
-            } else {
-                a *= 3
-                a += 1
-            }
+            a = if (a % 2 == 0L) a / 2 else 3 * a + 1
+            if (a == 1L) return b
         }
-        return b
     }
 
-    fun part2(): Int {
-        var a = 113383L
-        var b = 0
-
-        while (a != 1L) {
-            b += 1
-            if (a % 2 == 0L) {
-                a /= 2
-            } else {
-                a *= 3
-                a += 1
-            }
-        }
-        return b
-    }
+    fun part1() = solve(4591L)
+    fun part2() = solve(113383L)
 
     part1().println()
     part2().println()
