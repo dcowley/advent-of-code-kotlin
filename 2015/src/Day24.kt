@@ -17,5 +17,22 @@ fun main() {
         return b
     }
 
+    fun part2(): Int {
+        var a = 113383L
+        var b = 0
+
+        while (a != 1L) {
+            b += 1
+            if (a % 2 == 0L) {
+                a /= 2
+            } else {
+                a *= 3
+                a += 1
+            }
+        }
+        return b
+    }
+
     part1().println()
+    part2().println()
 }
