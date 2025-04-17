@@ -1,24 +1,51 @@
-import kotlin.math.absoluteValue
+import kotlin.math.abs
 
 fun main() {
     val regex = Regex("([R|L])(\\d+)")
-    fun part1(input: String): Int {
-        val route = regex.findAll(input)
-            .map { it.groupValues[1] to it.groupValues[2].toInt() }
 
+    fun parse(input: String) = regex.findAll(input)
+        .map { it.groupValues[1] to it.groupValues[2].toInt() }
+
+    fun part1(input: String): Int {
+        val instructions = parse(input)
         var direction = Direction.NORTH
         var point = 0 to 0
-        route.forEach { (rotation, steps) ->
+
+        instructions.forEach { (rotation, steps) ->
             direction = direction.turn(if (rotation == "R") Rotation.CLOCKWISE else Rotation.ANTICLOCKWISE)
             repeat(steps) {
                 point = point.move(direction)
             }
         }
-        return point.x.absoluteValue + point.y.absoluteValue
+
+        return abs(point.x) + abs(point.y)
+    }
+
+    fun part2(input: String): Int {
+        val instructions = parse(input)
+        var direction = Direction.NORTH
+        var point = 0 to 0
+
+        val visitedPoints = mutableSetOf<Pair<Int, Int>>()
+        instructions.forEach { (rotation, steps) ->
+            direction = direction.turn(if (rotation == "R") Rotation.CLOCKWISE else Rotation.ANTICLOCKWISE)
+            repeat(steps) {
+                point = point.move(direction)
+                if (point in visitedPoints) {
+                    return abs(point.x) + abs(point.y)
+                }
+                visitedPoints += point
+            }
+        }
+
+        return abs(point.x) + abs(point.y)
     }
 
     check(part1("R2, L3") == 5)
     check(part1("R2, R2, R2") == 2)
     check(part1("R5, L5, R5, R3") == 12)
     println(part1(readInputText("Day01")))
+
+    check(part2("R8, R4, R4, R8") == 4)
+    println(part2(readInputText("Day01")))
 }
