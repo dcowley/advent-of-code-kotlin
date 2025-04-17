@@ -4,7 +4,7 @@ fun main() {
     val regex = Regex("([R|L])(\\d+)")
 
     fun parse(input: String) = regex.findAll(input)
-        .map { it.groupValues[1] to it.groupValues[2].toInt() }
+        .map { (if (it.groupValues[1] == "R") Rotation.CLOCKWISE else Rotation.ANTICLOCKWISE) to it.groupValues[2].toInt() }
 
     fun part1(input: String): Int {
         val instructions = parse(input)
@@ -12,7 +12,7 @@ fun main() {
         var point = 0 to 0
 
         instructions.forEach { (rotation, steps) ->
-            direction = direction.turn(if (rotation == "R") Rotation.CLOCKWISE else Rotation.ANTICLOCKWISE)
+            direction = direction.turn(rotation)
             repeat(steps) {
                 point = point.move(direction)
             }
@@ -28,7 +28,7 @@ fun main() {
 
         val visitedPoints = mutableSetOf<Pair<Int, Int>>()
         instructions.forEach { (rotation, steps) ->
-            direction = direction.turn(if (rotation == "R") Rotation.CLOCKWISE else Rotation.ANTICLOCKWISE)
+            direction = direction.turn(rotation)
             repeat(steps) {
                 point = point.move(direction)
                 if (point in visitedPoints) {
