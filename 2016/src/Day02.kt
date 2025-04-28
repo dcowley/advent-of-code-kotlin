@@ -6,20 +6,14 @@ fun main() {
         'R' to Direction.EAST
     )
 
-    fun part1(input: List<String>) = buildString {
-        val keypad = """
-            123
-            456
-            789
-        """.trimIndent().toGrid()
-
-        var position = 1 to 1
+    fun solve(input: List<String>, keypad: Map<Pair<Int, Int>, Char>, initialPosition: Pair<Int, Int>) = buildString {
+        var position = initialPosition
 
         input.forEach { sequence ->
             sequence.forEach {
-                val next = position.move(directions.getValue(it))
-                if (next in keypad.keys) {
-                    position = next
+                val nextPosition = position.move(directions.getValue(it))
+                if (nextPosition in keypad.keys) {
+                    position = nextPosition
                 }
             }
 
@@ -27,7 +21,17 @@ fun main() {
         }
     }
 
-    fun part2(input: List<String>) = buildString {
+    fun part1(input: List<String>): String {
+        val keypad = """
+            123
+            456
+            789
+        """.trimIndent().toGrid()
+
+        return solve(input, keypad, 1 to 1)
+    }
+
+    fun part2(input: List<String>): String {
         val keypad = """
             |  1  
             | 234 
@@ -38,18 +42,7 @@ fun main() {
             .toGrid()
             .filterValues { it.isLetterOrDigit() }
 
-        var position = 0 to 2
-
-        input.forEach { sequence ->
-            sequence.forEach {
-                val next = position.move(directions.getValue(it))
-                if (next in keypad.keys) {
-                    position = next
-                }
-            }
-
-            append(keypad[position])
-        }
+        return solve(input, keypad, 0 to 2)
     }
 
     check(part1(readInput("Day02_test")) == "1985")
