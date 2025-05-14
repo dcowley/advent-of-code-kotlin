@@ -1,17 +1,15 @@
 fun main() {
-    val regex = "(\\d+)\\s+(\\d+)\\s+(\\d+)".toRegex()
+    fun part1(input: String): Int {
+        val sides = "\\d+".toRegex().findAll(input)
+            .map { it.value.toInt() }
+            .windowed(3, 3)
+            .map { it.sorted() }
 
-    fun part1(input: List<String>) = input.count {
-        val sides = regex.find(it.trim())!!.groupValues
-            .takeLast(3)
-            .map(String::toInt)
-            .sorted()
-
-        sides[0] + sides[1] > sides[2]
+        return sides.count { it[0] + it[1] > it[2] }
     }
 
     fun part2(input: String): Int {
-        val numbers = Regex("\\d+")
+        val numbers = "\\d+".toRegex()
             .findAll(input)
             .map { it.value.toInt() }
             .toList()
@@ -29,7 +27,7 @@ fun main() {
         return count
     }
 
-    println(part1(readInput("Day03")))
+    println(part1(readInputText("Day03")))
 
     check(part2(readInputText("Day03_test")) == 6)
     println(part2(readInputText("Day03")))
