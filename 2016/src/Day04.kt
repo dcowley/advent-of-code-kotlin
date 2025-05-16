@@ -1,30 +1,26 @@
 fun main() {
-    fun part1(input: List<String>): Int {
-        val regex = "([a-z-]+)+-(\\d+)\\[(\\w+)]".toRegex()
+    val regex = "([a-z-]+)+-(\\d+)\\[(\\w+)]".toRegex()
 
-        return input.sumOf {
-            val (name, id, checksum) = regex.find(it)!!.destructured
+    fun part1(input: List<String>) = input.sumOf {
+        val (name, id, checksum) = regex.find(it)!!.destructured
 
-            val counts = name
-                .replace("-", "")
-                .associateWith { char -> Regex("$char").findAll(name).count() }
+        val counts = name
+            .replace("-", "")
+            .associateWith { char -> Regex("$char").findAll(name).count() }
 
-            val actualChecksum = counts.keys.sorted()
-                .sortedByDescending(counts::get)
-                .take(5)
-                .joinToString("")
+        val actualChecksum = counts.keys.sorted()
+            .sortedByDescending(counts::get)
+            .take(5)
+            .joinToString("")
 
-            if (actualChecksum == checksum) {
-                id.toInt()
-            } else {
-                0
-            }
+        if (actualChecksum == checksum) {
+            id.toInt()
+        } else {
+            0
         }
     }
 
     fun part2(input: List<String>) = input.map {
-        val regex = "([a-z-]+)+-(\\d+)\\[(\\w+)]".toRegex()
-
         val (name, id, _) = regex.find(it)!!.destructured
 
         val decrypted = name
