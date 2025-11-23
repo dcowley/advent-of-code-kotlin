@@ -23,6 +23,30 @@ fun main() {
         return horizontal * (unitsDown - unitsUp)
     }
 
+    fun part2(input: List<Command>): Int {
+        var aim = 0
+        var horizontal = 0
+        var depth = 0
+
+        input.forEach {
+            when (it) {
+                is Command.Forward -> {
+                    horizontal += it.units
+                    depth += it.units * aim
+                }
+
+                is Command.Down -> aim += it.units
+                is Command.Up -> aim -= it.units
+            }
+        }
+
+        return horizontal * depth
+    }
+
     check(part1(parse(readInput("Day02_test"))) == 150)
     println(part1(parse(readInput("Day02"))))
+
+    val part2 = part2(parse(readInput("Day02_test")))
+    check(part2 == 900)
+    println(part2(parse(readInput("Day02"))))
 }
