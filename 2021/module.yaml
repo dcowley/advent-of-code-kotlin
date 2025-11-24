@@ -1,4 +1,8 @@
 product: jvm/app
 
 dependencies:
+  - ../data
   - ../shared
+
+test-dependencies:
+  - junit:junit:4.13.1

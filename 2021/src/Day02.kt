@@ -1,11 +1,13 @@
+import dev.dc.aoc.data.getInput
+
 sealed class Command(val units: Int) {
     class Forward(units: Int) : Command(units)
     class Down(units: Int) : Command(units)
     class Up(units: Int) : Command(units)
 }
 
-fun main() {
-    fun parse(input: List<String>) = input.map {
+object Day02 {
+    private fun parse(input: String) = input.lines().map {
         val (direction, units) = it.split(" ")
         when (direction) {
             "forward" -> Command.Forward(units.toInt())
@@ -15,20 +17,30 @@ fun main() {
         }
     }
 
-    fun part1(input: List<Command>): Int {
-        val horizontal = input.filterIsInstance<Command.Forward>().sumOf { it.units }
-        val unitsDown = input.filterIsInstance<Command.Down>().sumOf { it.units }
-        val unitsUp = input.filterIsInstance<Command.Up>().sumOf { it.units }
+    fun part1(input: String): Int {
+        var horizontal = 0
+        var depth = 0
 
-        return horizontal * (unitsDown - unitsUp)
+        parse(input).forEach {
+            when (it) {
+                is Command.Forward -> {
+                    horizontal += it.units
+                }
+
+                is Command.Down -> depth += it.units
+                is Command.Up -> depth -= it.units
+            }
+        }
+
+        return horizontal * depth
     }
 
-    fun part2(input: List<Command>): Int {
+    fun part2(input: String): Int {
         var aim = 0
         var horizontal = 0
         var depth = 0
 
-        input.forEach {
+        parse(input).forEach {
             when (it) {
                 is Command.Forward -> {
                     horizontal += it.units
@@ -42,11 +54,9 @@ fun main() {
 
         return horizontal * depth
     }
+}
 
-    check(part1(parse(readInput("Day02_test"))) == 150)
-    println(part1(parse(readInput("Day02"))))
-
-    val part2 = part2(parse(readInput("Day02_test")))
-    check(part2 == 900)
-    println(part2(parse(readInput("Day02"))))
+suspend fun main() {
+    println(Day02.part1(getInput(2021, 2)))
+    println(Day02.part2(getInput(2021, 2)))
 }

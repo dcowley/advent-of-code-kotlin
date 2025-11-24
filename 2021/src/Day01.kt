@@ -1,20 +1,23 @@
-fun main() {
-    fun parse(input: List<String>) = input.map(String::toInt)
-    fun part1(input: List<Int>): Int {
-        return input
-            .zipWithNext()
-            .count { (a, b) -> a < b }
-    }
+import dev.dc.aoc.data.getInput
 
-    fun part2(input: List<Int>): Int {
-        return input
-            .windowed(3)
-            .zipWithNext()
-            .count { (l, r) -> l.sum() < r.sum() }
-    }
+object Day01 {
+    private fun parse(input: String) = input
+        .lines()
+        .map(String::toInt)
 
-    check(part1(parse(readInput("Day01_test"))) == 7)
-    check(part2(parse(readInput("Day01_test"))) == 5)
-    println(part1(parse(readInput("Day01"))))
-    println(part2(parse(readInput("Day01"))))
+    fun part1(input: String) = parse(input)
+        .zipWithNext()
+        .count { (a, b) -> a < b }
+
+    fun part2(input: String) = parse(input)
+        .windowed(3)
+        .zipWithNext()
+        .count { (l, r) -> l.sum() < r.sum() }
+}
+
+suspend fun main() {
+    val input = getInput(2021, 1)
+
+    println(Day01.part1(input))
+    println(Day01.part2(input))
 }
