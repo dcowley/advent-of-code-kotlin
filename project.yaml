@@ -3,4 +3,5 @@ modules:
     - '2016'
     - '2021'
     - '2024'
+    - data
     - shared
