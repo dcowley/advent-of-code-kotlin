@@ -14,14 +14,15 @@ private val sessionCookie by lazy {
     Path(".secrets/aoc-session-cookie").readText()
 }
 
-private val client = HttpClient(OkHttp) {
-    defaultRequest {
-        cookie(
-            name = "session",
-            value = sessionCookie
-        )
+private val client: HttpClient
+    get() = HttpClient(OkHttp) {
+        defaultRequest {
+            cookie(
+                name = "session",
+                value = sessionCookie
+            )
+        }
     }
-}
 
 suspend fun getInput(year: Int, day: Int): String {
     val file = "Day" + "$day".padStart(2, '0') + ".txt"
@@ -31,10 +32,12 @@ suspend fun getInput(year: Int, day: Int): String {
         path.exists() -> path.readText().trim()
 
         else -> {
-            client.get("https://adventofcode.com/$year/day/$day/input")
-                .bodyAsText()
-                .trim()
-                .also(path::writeText)
+            client.use {
+                it.get("https://adventofcode.com/$year/day/$day/input")
+                    .bodyAsText()
+                    .trim()
+                    .also(path::writeText)
+            }
         }
     }
 }
