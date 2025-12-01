@@ -21,6 +21,6 @@ class Day01Test {
 
     @Test
     fun part2() {
-        assert(Day01.part2(testData) == 0)
+        assert(Day01.part2(testData) == 6)
     }
 }
