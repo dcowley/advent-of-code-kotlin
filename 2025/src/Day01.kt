@@ -4,8 +4,17 @@ object Day01 {
     private fun parse(input: String) = input.lines()
 
     fun part1(input: String) = parse(input).let {
+        var position = 50
 
-        Int.MIN_VALUE
+        it.count { instruction ->
+            val next = instruction.drop(1).toInt()
+            when (instruction.first()) {
+                'L' -> position -= next
+                'R' -> position += next
+            }
+
+            position % 100 == 0
+        }
     }
 
     fun part2(input: String) = parse(input).let {
