@@ -1,12 +1,9 @@
 import dev.dc.aoc.data.getInput
 
 object Day02 {
-    private fun parse(input: String) = input.lines()
-        .flatMap { idRanges ->
-            idRanges.split(",")
-                .map { idRange -> idRange.split("-").map(String::toLong) }
-                .map { (id1, id2) -> id1..id2 }
-        }
+    private fun parse(input: String) = input.split(",")
+        .map { it.split("-").map(String::toLong) }
+        .map { (id1, id2) -> id1..id2 }
         .flatten()
 
     private fun solve(input: String, matcher: (Long) -> Regex) = parse(input)
