@@ -3,4 +3,5 @@
 .secrets
 build
 */src/**/*.txt
+*/src/**/*_naive.kt
 local.properties
