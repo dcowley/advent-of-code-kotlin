@@ -29,7 +29,7 @@ suspend fun getInput(year: Int, day: Int): String {
     val path = Path("$year/src/$file")
 
     return when {
-        path.exists() -> path.readText().trim()
+        path.exists() -> path.readText()
 
         else -> {
             client.use {
