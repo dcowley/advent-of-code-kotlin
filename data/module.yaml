@@ -1,6 +1,0 @@
-product: jvm/app
-
-dependencies:
-  - io.ktor:ktor-client-core:3.3.2
-  - io.ktor:ktor-client-okhttp:3.3.2
-  - ch.qos.logback:logback-classic:1.5.13
