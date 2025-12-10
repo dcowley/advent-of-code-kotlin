@@ -11,6 +11,7 @@ repositories {
 dependencies {
     implementation(project(":data"))
     implementation(project(":shared"))
+    implementation(libs.google.ortools)
 
     testImplementation(kotlin("test"))
 }
@@ -18,6 +19,7 @@ dependencies {
 tasks.test {
     useJUnitPlatform()
 }
+
 kotlin {
     jvmToolchain(17)
 }
