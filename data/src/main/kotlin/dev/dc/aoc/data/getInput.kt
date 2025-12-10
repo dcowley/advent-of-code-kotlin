@@ -5,6 +5,7 @@ import io.ktor.client.engine.okhttp.*
 import io.ktor.client.plugins.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
+import okhttp3.Headers
 import kotlin.io.path.Path
 import kotlin.io.path.exists
 import kotlin.io.path.readText
@@ -21,6 +22,7 @@ private val client: HttpClient
                 name = "session",
                 value = sessionCookie
             )
+            header("User-Agent", "https://github.com/dcowley/advent-of-code-kotlin by dean.w.cowley@gmail.com")
         }
     }
 
@@ -33,7 +35,8 @@ suspend fun getInput(year: Int, day: Int): String {
 
         else -> {
             client.use {
-                it.get("https://adventofcode.com/$year/day/$day/input")
+                val response = it.get("https://adventofcode.com/$year/day/$day/input")
+                response
                     .bodyAsText()
                     .trim()
                     .also(path::writeText)
