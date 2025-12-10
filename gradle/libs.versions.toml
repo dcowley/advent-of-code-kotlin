@@ -1,0 +1,8 @@
+[versions]
+ktor = "3.3.2"
+gson = "2.11.0"
+
+[libraries]
+ktor-client-core = { module="io.ktor:ktor-client-core", version.ref = "ktor" }
+ktor-client-okhttp = { module="io.ktor:ktor-client-okhttp", version.ref = "ktor" }
+google-gson = { module="com.google.code.gson:gson", version.ref = "gson" }

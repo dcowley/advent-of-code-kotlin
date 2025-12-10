@@ -1,5 +1,0 @@
-product: jvm/app
-
-dependencies:
-    - ../shared
-    - com.google.code.gson:gson:2.11.0
